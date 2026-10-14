@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>本地大模型部署自查包 v1.0</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem;
+         font: 16px/1.75 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
+  h1 { font-size: 1.5rem; margin-bottom: .25rem; }
+  .sub { color: #666; margin-top: 0; }
+  h2 { font-size: 1.1rem; margin-top: 2rem; border-left: 3px solid #f5c518; padding-left: .6rem; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid #ddd; vertical-align: top; }
+  code { background: rgba(127,127,127,.14); padding: .1em .35em; border-radius: 4px;
+         font-family: Consolas, "Courier New", monospace; font-size: .92em; }
+  pre { background: rgba(127,127,127,.12); padding: .8rem 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .dl { display: inline-block; background: #f5c518; color: #111; text-decoration: none;
+        font-weight: 700; padding: .8rem 1.4rem; border-radius: 999px; margin: 1rem 0 .5rem; }
+  .meta { color: #666; font-size: .9rem; }
+  footer { margin-top: 3rem; color: #666; font-size: .9rem; border-top: 1px solid #ddd; padding-top: 1rem; }
+</style>
+</head>
+<body>
+<h1>本地大模型部署自查包</h1>
+<p class="sub">跑大模型之前，先花两分钟把机器的底摸清楚 —— 少走弯路，也不会买错模型。</p>
+
+<p>开源模型对不上你的机器，八成不是模型的问题，是<strong>显存、驱动、编译架构</strong>这三样里有一个不对。
+这个包帮你先把这三样查清楚，再算出一组能跑起来的参数。</p>
+
+<p><a class="dl" href="LLM-Setup-Check-v1.0.zip" download>下载 LLM-Setup-Check-v1.0.zip</a><br>
+<span class="meta">4.7 KB · 解压即用 · 只依赖系统自带的 PowerShell / bash / python3，不需要 pip install 任何包</span></p>
+
+<h2>里面有什么</h2>
+<table>
+<tr><th>文件</th><th>干什么</th></tr>
+<tr><td>`检查.ps1`</td><td>Windows：一键查显卡、驱动、内存、磁盘，并给出“你这张卡适合跑多大模型”的建议</td></tr>
+<tr><td>`检查.sh`</td><td>Linux / WSL：同上，另外列出已装的推理工具</td></tr>
+<tr><td>`生成启动参数.py`</td><td>按你的显存和模型大小，算一组能跑起来的 llama.cpp 参数</td></tr>
+<tr><td>`使用说明.md`</td><td>用法 + 常见报错速查（PTX 不兼容 / OOM / KV 量化 / 跑得慢）</td></tr>
+</table>
+
+<h2>怎么用</h2>
+<pre><code># Windows（右键 PowerShell 运行，或）
+powershell -ExecutionPolicy Bypass -File .\检查.ps1
+
+# Linux / WSL
+bash 检查.sh
+
+# 算参数：11 GB 显存跑 5.7 GB 的 Q4 模型，上下文 32K
+python3 生成启动参数.py --vram 11 --model-gb 5.7 --ctx 32768</code></pre>
+
+<h2>按它查完还是卡住？</h2>
+<p>把 <code>检查</code> 脚本的输出发我，我看看是哪一步不对 —— 在闲鱼会话里直接说就行。</p>
+
+<footer>
+原创整理，不保证覆盖所有环境。买去随便用；请别再转卖或到处发。<br>
+版本 v1.0 · 2026-10
+</footer>
+</body>
+</html>
